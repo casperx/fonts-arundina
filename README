@@ -13,16 +13,23 @@ for certain aspects:
     the Thai-specific features well, the 'liga' GSUB hack developed by the
     original author is still retained for the time being.
 
-We use FontForge as development tool. You need it to generate fonts from the
-downloaded source.
+We use FontForge [5] as the development tool. You need it to generate fonts
+from the downloaded source.
 
-For more information, see our project page at:
+For LaTeX users, Arundina fonts have been available in texlive and miktex
+distributions via the package 'fonts-arundina'. For users who wish to use
+the package directly from CTAN, a .tds.zip is available which contains
+the generated fonts (pfb+tfm). See the "TDS archive" link at
+  https://ctan.org/pkg/fonts-arundina
+
+For more information on our project, see:
   https://linux.thai.net/projects/fonts-sipa-arundina
 
 Links:
 [0] https://www.f0nt.com/release/arundina-by-sipa/
-[1] https://www.gnome.org/fonts/
+[1] https://download.gnome.org/sources/ttf-bitstream-vera/1.10/
 [2] https://dejavu-fonts.github.io/
 [3] https://docs.microsoft.com/en-us/typography/script-development/thai
 [4] https://linux.thai.net/~thep/th-otf/
+[5] https://fontforge.org/
 
