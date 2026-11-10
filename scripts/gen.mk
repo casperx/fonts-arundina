@@ -7,4 +7,16 @@ SUFFIXES: .sfd .ttf .otf .afm .pfb
 	$(PYTHON) $(top_srcdir)/scripts/gen-otf.py $<
 
 %.afm %.pfb: %.sfd
-	$(PYTHON) $(top_srcdir)/scripts/gen-pfb.py $<
+	LC_ALL=C $(PYTHON) $(top_srcdir)/scripts/gen-pfa.py $<
+	TMPFILE=$$(mktemp /tmp/tltx.XXXXXXXXX) && \
+	  $(SED) \
+	    -e '/^Comment Creation Date:/d' \
+            $*.afm > $${TMPFILE} && \
+	  mv -f $${TMPFILE} $*.afm
+	TMPFILE=$$(mktemp /tmp/tltx.XXXXXXXXX) && \
+	  $(SED) \
+	    -e '/^%%CreationDate:/d' \
+	    -e '/^%%Creator:/d' \
+            $*.pfa > $${TMPFILE} && \
+	  $(T1BINARY) $${TMPFILE} > $*.pfb && \
+	  rm -f $*.pfa $${TMPFILE}

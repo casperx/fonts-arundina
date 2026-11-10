@@ -35,8 +35,7 @@ ltharun.enc:
 thailigs.vpl: thai-dummy.afm thailigs.enc
 	$(AFM2TFM) thai-dummy.afm -v $@ -T thailigs.enc thailigs.tfm
 
-r%.tfm: %.afm
-%.vpl: %.afm thailigs.vpl ltharun.enc
+r%.tfm %.vpl: %.afm thailigs.vpl ltharun.enc
 	$(AFM2TFM) $*.afm -v $*.vpl -T ltharun.enc r$*.tfm \
 	| $(SED) "s/$$/ <$*.pfb/" >> $(MAP)
 	TMPFILE=`mktemp /tmp/tltx.XXXXXXXXX` && \
@@ -45,9 +44,8 @@ r%.tfm: %.afm
 	$(AWK) "BEGIN {show=0} /CHARACTER/ {show=1} {if(show) print}" $*.vpl >> $$TMPFILE && \
 	mv $$TMPFILE $*.vpl
 
-r%_so.tfm: %.afm
-%_so.vpl: %.afm thailigs.vpl
-	$(AFM2TFM) $*.afm -v $*_so.vpl -T lthuni.enc -s .167 r$*_so.tfm \
+r%_so.tfm %_so.vpl: %.afm thailigs.vpl ltharun.enc
+	$(AFM2TFM) $*.afm -v $*_so.vpl -T ltharun.enc -s .167 r$*_so.tfm \
 	| $(SED) "s/$$/ <$*.pfb/" >> $(MAP)
 	TMPFILE=`mktemp /tmp/tltx.XXXXXXXXX` && \
 	$(AWK) "BEGIN {show=1} /LIGTABLE/ {show=0} {if(show) print}" $*_so.vpl > $$TMPFILE && \
@@ -55,11 +53,11 @@ r%_so.tfm: %.afm
 	$(AWK) "BEGIN {show=0} /CHARACTER/ {show=1} {if(show) print}" $*_so.vpl >> $$TMPFILE && \
 	mv $$TMPFILE $*_so.vpl
 
-%.tfm: %.vpl
+%.vf %.tfm: %.vpl
 	$(VPTOVF) $*
 
 $(MAP): $(ltxtfm_DATA)
-	LC_COLLATE=C sort $@ | uniq > /tmp/tmp.$$$$; mv /tmp/tmp.$$$$ $@
+	LC_ALL=C sort $@ | uniq > /tmp/tmp.$$$$; mv /tmp/tmp.$$$$ $@
 
 install-data-hook:
 	@if test -z "$(DESTDIR)" ; then                                       \
